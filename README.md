@@ -17,4 +17,4 @@ The CMakeList.txt has been tested on linux only.
 
 Usage:
 after complie run the program, a window will show up with two rendering mode.
-Press S for surface, V fpr volume (implemeneted as a red triangle/blue box now)
+Press S for surface, V fpr volume (implemeneted as red triangles/blue box now)
