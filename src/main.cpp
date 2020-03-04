@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <fstream>
+
 
 // Include GLEW
 #include <GL/glew.h>
@@ -51,7 +53,6 @@ const char* fragment_shader_rt =
 "  frag_colour = vec4(0.0, 0.0, 0.5, 0.4);"
 "}";
 
-std::vector<float> inputData;
 
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
@@ -178,8 +179,25 @@ int main( void )
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
 
+	int dim[3] = {500, 470, 136};
+	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
+
+	// Read data
+	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
+    	file.read((&inputData[i]), sizeof(inputData[i]));
+  	}
+  	file.close();
+
+  	// output test for correctness, should be exactly the same
+  	// std::ofstream ofile ("output.raw", std::ios::out | std::ios::binary);
+  	// if (ofile.is_open()){
+   	//  ofile.write(&inputData[0], sizeof(inputData[0]) * dim[0] * dim [1] * dim[2]);
+  	//  ofile.close();
+  	// }
+
 	// for test case make a simple 2x2x2 grid, half 0s half 1s
-	MarchingCube(inputData, vertices_surface, normals_surface);
+	MarchingCube(inputData, dim, vertices_surface, normals_surface);
 
 
 	// Create vbos
