@@ -18,8 +18,9 @@ void MarchingCube(const std::vector<char> &input,
 		  std::vector<float> &output_vertices,
 		  std::vector<float> &output_normals){
 
-  // this will be called by the rendering procedural
-  // fill the output_vertices and output_normals by input grid data
+  // fill the outputs with results applying Marching cube on input
+
+  // this is a debug thing to show the frog contour
   simpleSurface(input, dim, output_vertices, output_normals);
 
 }
@@ -44,8 +45,7 @@ void simpleSurface(const std::vector<char> &input,
 
   for (int i = 0; i < dim[0] * dim[1] * dim[2]; ++i)
   {
-    // fill the outputs with results applying MC on input
-    // this line just fill in one hard coded triangle
+
     if (input[i]){
     int position[3];
     position[0] = i % dim[0];
