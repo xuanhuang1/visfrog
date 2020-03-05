@@ -1,0 +1,12 @@
+﻿visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwSwapBuffers
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwGetKey
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwTerminate
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwPollEvents
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwInit
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwSetKeyCallback
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwCreateWindow
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwWindowHint
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwSetInputMode
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwMakeContextCurrent
+visFrogForWindows.obj : error LNK2001: unresolved external symbol _glfwWindowShouldClose
+C:\Users\wanna\visfrog\visFrogForWindows\Release\visFrogForWindows.exe : fatal error LNK1120: 11 unresolved externals
