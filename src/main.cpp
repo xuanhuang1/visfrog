@@ -183,7 +183,8 @@ int main( void )
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 
 	// Read data
-	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+	std::ifstream file("../../data/frog.raw", std::ios::in | std::ios::binary);
 	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
     	file.read((&inputData[i]), sizeof(inputData[i]));
   	}

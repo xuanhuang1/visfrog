@@ -20,6 +20,70 @@ void MarchingCube(const std::vector<char> &input,
 
   // fill the outputs with results applying Marching cube on input
 
+  /*
+
+A diagram for convenience while planning.
+
+z
+^    _  y
+|    /|
+|  /
+|/______> X
+     ________
+   /|       /|
+ /__|____ /  |
+|   |	 |   |
+|   |____|___|
+|  /     |  /    
+|/_______|/
+
+  */
+
+  /*
+  //Work in progress: real marching cubes.
+
+  char threshold = 150;
+  for(int currentX = 0; currentX < dim[0] - 1; currentX++)
+	for(int currentX = 0; currentX < dim[1] - 1; currentX++)
+  		for(int currentX = 0; currentX < dim[2] - 1; currentX++)
+		{
+			char cornerLowerLeftFront = input[currentX][currentY][currentZ];
+			char cornerLowerRightFront = input[currentX + 1][currentY][currentZ];
+			char cornerLowerLeftBack = input[currentX][currentY + 1][currentZ];
+			char cornerLowerRightBack = input[currentX + 1][currentY + 1][currentZ];
+			char cornerUpperLeftFront = input[currentX][currentY][currentZ + 1];
+			char cornerUpperRightFront = input[currentX + 1][currentY][currentZ + 1];
+			char cornerUpperLeftBack = input[currentX][currentY + 1][currentZ + 1];	
+			char cornerUpperRightBack = input[currentX + 1][currentY + 1][currentZ + 1];
+			bool cornerLowerLeftFrontAboveThreshold = cornerLowerLeftFront > threshold;
+			bool cornerLowerRightFrontAboveThreshold = cornerLowerRightFront > threshold;
+			bool cornerLowerLeftBackAboveThreshold = cornerLowerLeftBack > threshold;
+			bool cornerLowerRightBacktAboveThreshold = cornerLowerRightBack > threshold;
+			bool cornerUpperLeftFrontAboveThreshold = cornerUpperLeftFront > threshold;
+			bool cornerUpperRightFrontAboveThreshold = cornerUpperRightFront > threshold;
+			bool cornerUpperLeftBackAboveThreshold = cornerUpperLeftBack > threshold;
+			bool cornerUpperRightBackAboveThreshold = cornerUpperRightBack > threshold;	
+			int howManyCornersAbove = 0;
+			if(cornerLowerLeftFrontAboveThreshold)
+				howManyCornersAbove++;
+			if(cornerLowerRightFrontAboveThreshold) 
+				howManyCornersAbove++;
+			if(cornerLowerLeftBackAboveThreshold) 
+				howManyCornersAbove++;
+			if(cornerLowerRightBacktAboveThreshold)
+				howManyCornersAbove++;
+			if(cornerUpperLeftFrontAboveThreshold) 
+				howManyCornersAbove++;
+			if(cornerUpperRightFrontAboveThreshold) 
+				howManyCornersAbove++;
+			if(cornerUpperLeftBackAboveThreshold) 
+				howManyCornersAbove++;
+			if(cornerUpperRightBackAboveThreshold) 
+				howManyCornersAbove++;
+			cout << std::to_string(howManyCornersAbove) + "\n";
+		}
+  */	
+
   // this is a debug thing to show the frog contour
   simpleSurface(input, dim, output_vertices, output_normals);
 
