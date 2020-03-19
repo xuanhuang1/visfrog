@@ -1,5 +1,8 @@
 #include "MarchingCube.h"
 #include <vector>
+#include <iostream>
+#include <string>
+using namespace std;
 
 
 // form a front-facing triangle per non zero vertex
@@ -39,22 +42,29 @@ z
 
   */
 
-  /*
   //Work in progress: real marching cubes.
 
   char threshold = 150;
   for(int currentX = 0; currentX < dim[0] - 1; currentX++)
-	for(int currentX = 0; currentX < dim[1] - 1; currentX++)
-  		for(int currentX = 0; currentX < dim[2] - 1; currentX++)
+	for(int currentY = 0; currentY < dim[1] - 1; currentY++)
+		for (int currentZ = 0; currentZ < dim[2] - 1; currentZ++)
 		{
-			char cornerLowerLeftFront = input[currentX][currentY][currentZ];
-			char cornerLowerRightFront = input[currentX + 1][currentY][currentZ];
-			char cornerLowerLeftBack = input[currentX][currentY + 1][currentZ];
-			char cornerLowerRightBack = input[currentX + 1][currentY + 1][currentZ];
-			char cornerUpperLeftFront = input[currentX][currentY][currentZ + 1];
-			char cornerUpperRightFront = input[currentX + 1][currentY][currentZ + 1];
-			char cornerUpperLeftBack = input[currentX][currentY + 1][currentZ + 1];	
-			char cornerUpperRightBack = input[currentX + 1][currentY + 1][currentZ + 1];
+			/*
+				Some assumptions I am making about the array shape.
+				--------> x direction
+				|
+				|
+				|
+				V y direction
+			*/
+			char cornerLowerLeftFront = input[currentX + currentY * dim[0] + currentZ * dim[0] * dim[1]];
+			char cornerLowerRightFront = input[currentX + 1 + currentY * dim[0] + currentZ * dim[0] * dim[1]];
+			char cornerLowerLeftBack = input[currentX + (currentY + 1) * dim[0] + currentZ * dim[0] * dim[1]];
+			char cornerLowerRightBack = input[currentX + 1 + (currentY + 1) * dim[0] + currentZ * dim[0] * dim[1]];
+			char cornerUpperLeftFront = input[currentX + currentY * dim[0] + (currentZ + 1) * dim[0] * dim[1]];
+			char cornerUpperRightFront = input[currentX + 1 + currentY * dim[0] + (currentZ + 1) * dim[0] * dim[1]];
+			char cornerUpperLeftBack = input[currentX + (currentY + 1) * dim[0] + (currentZ + 1) * dim[0] * dim[1]];
+			char cornerUpperRightBack = input[currentX + 1 + (currentY + 1) * dim[0] + (currentZ + 1) * dim[0] * dim[1]];
 			bool cornerLowerLeftFrontAboveThreshold = cornerLowerLeftFront > threshold;
 			bool cornerLowerRightFrontAboveThreshold = cornerLowerRightFront > threshold;
 			bool cornerLowerLeftBackAboveThreshold = cornerLowerLeftBack > threshold;
@@ -81,11 +91,10 @@ z
 			if(cornerUpperRightBackAboveThreshold) 
 				howManyCornersAbove++;
 			cout << std::to_string(howManyCornersAbove) + "\n";
-		}
-  */	
+		}	
 
   // this is a debug thing to show the frog contour
-  simpleSurface(input, dim, output_vertices, output_normals);
+  //simpleSurface(input, dim, output_vertices, output_normals);
 
 }
 
