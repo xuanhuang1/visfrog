@@ -1,14 +1,8 @@
 ﻿  MarchingCube.cpp
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(145,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-  main.cpp
-C:\Users\wanna\visfrog\src\main.cpp(198,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\main.cpp(198,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\main.cpp(247,66): warning C4309: 'argument': truncation of constant value
-C:\Users\wanna\visfrog\src\main.cpp(329,47): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\main.cpp(340,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(949,30): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating code
-  2 of 292 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    1 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  1 of 292 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   visFrogForWindows.vcxproj -> C:\Users\wanna\visfrog\visFrogForWindows\x64\Release\visFrogForWindows.exe
