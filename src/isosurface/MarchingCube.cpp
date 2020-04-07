@@ -92,6 +92,7 @@ void MarchingCube(const std::vector<char>& input,
 				//Ignores case 0.
 				if (howManyCornersAbove != 0 && howManyCornersAbove != 8)
 				{
+					/* These were some cases. They are currently not being used.
 					if (howManyCornersAbove == 7)
 					{
 						//Case 1
@@ -892,8 +893,133 @@ void MarchingCube(const std::vector<char>& input,
 
 					}
 
+					*/
+					//For now, just draws a cube..
+
+
 					/*
-					//For testing: just draws a triangle.
+	   ________
+	 /|       /|
+  z/__|____ /  |
+  |   |	   |   |
+  |   |y___|___|
+  |  /     |  /
+  |/_______|/ x
+
+
+					*/
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX ) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX ) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+
+
 					output_vertices.push_back(float(currentX)/float(dim[0]));
 					output_vertices.push_back(float(currentY) / float(dim[0]));
 					output_vertices.push_back(float(currentZ) / float(dim[0]));
@@ -905,7 +1031,48 @@ void MarchingCube(const std::vector<char>& input,
 					output_vertices.push_back(float(currentX) / float(dim[0]));
 					output_vertices.push_back(float(currentY) / float(dim[0]));
 					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
-					*/
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+
+					output_vertices.push_back(float(currentX) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+					output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentY + 1) / float(dim[0]));
+					output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+
 				}
 				//cout << std::to_string(howManyCornersAbove) + "\n";
 			}

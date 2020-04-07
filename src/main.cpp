@@ -244,7 +244,7 @@ int main( void )
   	// }
 
 	// for test case make a simple 2x2x2 grid, half 0s half 1s
-	MarchingCube(inputData, dim, vertices_surface, normals_surface, 150);
+	MarchingCube(inputData, dim, vertices_surface, normals_surface, 50);
 
 
 
