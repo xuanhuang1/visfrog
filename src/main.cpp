@@ -219,8 +219,8 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
-	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
-							   "../src/rayTrace/rayt.frag");
+	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
+							   "../../src/rayTrace/rayt.frag");
 
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
@@ -244,7 +244,7 @@ int main( void )
   	// }
 
 	// for test case make a simple 2x2x2 grid, half 0s half 1s
-	MarchingCube(inputData, dim, vertices_surface, normals_surface);
+	MarchingCube(inputData, dim, vertices_surface, normals_surface, 150);
 
 
 

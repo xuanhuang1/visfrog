@@ -19,7 +19,7 @@ void simpleSurface(const std::vector<char> &input,
 void MarchingCube(const std::vector<char> &input,
       const int dim[3], // x y z dimension of the data
 		  std::vector<float> &output_vertices,
-		  std::vector<float> &output_normals){
+		  std::vector<float> &output_normals, char threshold){
 
   // fill the outputs with results applying Marching cube on input
 
@@ -44,7 +44,6 @@ z
 
   //Work in progress: real marching cubes.
 
-  char threshold = 150;
   for(int currentX = 0; currentX < dim[0] - 1; currentX++)
 	for(int currentY = 0; currentY < dim[1] - 1; currentY++)
 		for (int currentZ = 0; currentZ < dim[2] - 1; currentZ++)
@@ -90,7 +89,21 @@ z
 				howManyCornersAbove++;
 			if(cornerUpperRightBackAboveThreshold) 
 				howManyCornersAbove++;
-			cout << std::to_string(howManyCornersAbove) + "\n";
+			if (howManyCornersAbove != 0 && howManyCornersAbove != 8)
+			{
+				output_vertices.push_back(float(currentX)/float(dim[0]));
+				output_vertices.push_back(float(currentY) / float(dim[0]));
+				output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+				output_vertices.push_back(float(currentX + 1) / float(dim[0]));
+				output_vertices.push_back(float(currentY) / float(dim[0]));
+				output_vertices.push_back(float(currentZ) / float(dim[0]));
+
+				output_vertices.push_back(float(currentX) / float(dim[0]));
+				output_vertices.push_back(float(currentY) / float(dim[0]));
+				output_vertices.push_back(float(currentZ + 1) / float(dim[0]));
+			}
+			//cout << std::to_string(howManyCornersAbove) + "\n";
 		}	
 
   // this is a debug thing to show the frog contour
