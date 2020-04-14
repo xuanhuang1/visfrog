@@ -59,7 +59,12 @@ const char* fragment_shader =
 glm::vec3 cameraPos;
 glm::vec3 cameraTarget;
 glm::vec3 up;
-
+float theta = 0.0;
+float phi = 0.0;
+float r = -2.0;
+double previousMouseX = 0.0;
+double previousMouseY = 0.0;
+bool isMouseHeld = false;
 
 
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
@@ -109,6 +114,7 @@ enum RENDER_TYPE{
 
 float width = 800, height = 600;
 glm::mat4 view, MVP, model, projection;
+
 
 RENDER_TYPE render_mode = SURFACE; // CHANGE HERE FOR A DIFFERENT MODE
 
@@ -186,22 +192,19 @@ GLuint getShaderFromFile(const char* path_v, const char* path_f){
 }
 
 
-static void startTurningRight()
+static void reorientCamera(float thetaChange, float phiChange, float rChange)
 {
-	std::cout << "Turning Right";
-	// init cameras
-	cameraPos = glm::vec3(1.0f, 1.0f, -3.0f);
-	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-}
-
-static void stopTurningRight()
-{
-	std::cout << "done turning";
-	// init cameras
+	//Default
+	/*
 	cameraPos = glm::vec3(1.0f, 1.0f, -2.0f);
 	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 	up = glm::vec3(0.0f, 1.0f, 0.0f);
+	*/
+	theta += thetaChange;
+	phi += phiChange;
+	r += rChange;
+	cameraPos = glm::vec3(r * sin(theta) * cos(phi), r * sin(theta) * sin(phi), r * cos(theta));
+	
 }
 
 
@@ -211,13 +214,37 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         render_mode = SURFACE;
     if (key == GLFW_KEY_V && action == GLFW_PRESS)
         render_mode = VOLUME;
-	if (key == GLFW_KEY_L && action == GLFW_PRESS)
-		startTurningRight();
-	if (key == GLFW_KEY_L && action == GLFW_RELEASE)
-		stopTurningRight();
-
 }
 
+static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	double xVariance = xpos - previousMouseX;
+	double yVariance = ypos - previousMouseY;
+	previousMouseX = xpos;
+	previousMouseY = ypos;
+	if (isMouseHeld)
+	{
+		reorientCamera(-xVariance / 10.0, -yVariance / 15.0, 0.0f);
+	}
+}
+
+void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		isMouseHeld = true;
+	}
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+	{
+		isMouseHeld = false;
+	}
+}
+
+void  scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	r = yoffset;
+	reorientCamera(0.0f, 0.0f, 0.0f);
+}
 
 
 
@@ -261,11 +288,15 @@ int main( void )
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	// Set Render Mode Callback
 	glfwSetKeyCallback(window, key_callback);
+	// Set camera control callback
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetMouseButtonCallback(window, mouse_click_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
-	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
-							   "../src/rayTrace/rayt.frag");
+	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
+							   "../../src/rayTrace/rayt.frag");
 
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
@@ -275,7 +306,7 @@ int main( void )
 
 	// Read data
 	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
-	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+	std::ifstream file("../../data/frog.raw", std::ios::in | std::ios::binary);
 	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
     	file.read((&inputData[i]), sizeof(inputData[i]));
   	}
