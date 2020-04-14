@@ -28,16 +28,33 @@ const char* vertex_shader =
 "uniform mat4 MVP;"
 "uniform mat4 V;"
 "in vec3 vp;"
+  "in vec3 norm;"
+  "out vec3 normal;"
+  "out vec3 pos;"
 "void main() {"
 "  gl_Position = MVP * vec4(vp, 1);"
+  "normal = norm;"
+  "pos =  vec4(vp, 1).xyz;"
 "}";
 
 const char* fragment_shader =
-"#version 330\n"
-"out vec4 frag_colour;"
-"void main() {"
-"  frag_colour = vec4(0.5, 0.0, 0.0, 0.4);"
-"}";
+  "#version 330\n"
+  "uniform mat4 V;"
+  "uniform vec3 EyePos;"
+
+  "out vec4 frag_colour;"
+  "in vec3 normal;"
+  "in vec3 pos;"
+  "void main() {"
+  "  vec3 n = normalize(( V * vec4(normal,0)).xyz);"
+  "  vec3 l = normalize(( V*vec4(0, 0, -0.5, 1)).xyz - (V*vec4(pos,1)).xyz);"
+  "  vec3 eye = normalize( - (V*vec4(pos,1)).xyz);"
+  "  vec3 R = reflect(-l ,n);"
+  "  float cosAlpha = clamp(dot(eye, R), 0, 1);"
+  "  float cosTheta = clamp(dot(n, l), 0, 1);"
+  "  vec3 surfColor = vec3(1,0,0);"
+  "  frag_colour = vec4(surfColor*(cosTheta + pow(cosAlpha,10)), 0.4);"
+  "}";
 
 glm::vec3 cameraPos;
 glm::vec3 cameraTarget;
@@ -273,7 +290,11 @@ int main( void )
 
 	// for test case make a simple 2x2x2 grid, half 0s half 1s
 	MarchingCube(inputData, dim, vertices_surface, normals_surface, 50);
-
+	for (int i=0;i<vertices_surface.size()/3;i++){
+	  normals_surface.push_back(0);
+	  normals_surface.push_back(0);
+	  normals_surface.push_back(-1);
+	}
 
 
 	// set texture
@@ -310,7 +331,12 @@ int main( void )
 	glGenBuffers(1, &vbo_surface);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_surface);
 	glBufferData(GL_ARRAY_BUFFER, vertices_surface.size() * sizeof(float), &vertices_surface[0], GL_STATIC_DRAW);
+	GLuint vbo_surface_normal = 0;
+	glGenBuffers(1, &vbo_surface_normal);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_surface_normal);
+	glBufferData(GL_ARRAY_BUFFER, normals_surface.size() * sizeof(float), &normals_surface[0], GL_STATIC_DRAW);
 
+	
 	GLuint vbo_volume = 0;
 	glGenBuffers(1, &vbo_volume);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_volume);
@@ -323,6 +349,9 @@ int main( void )
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_surface);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_surface_normal);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	GLuint vao_volume = 0;
 	glGenVertexArrays(1, &vao_volume);
@@ -359,8 +388,8 @@ int main( void )
 	do{
 		// Clear the screen
 	  
-	  glEnable(GL_DEPTH_TEST);
-	  glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT );
+		glEnable(GL_DEPTH_TEST);
+		glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT );
 
 		if (render_mode == SURFACE){
 			shader_program = shader_program_surface;
@@ -395,7 +424,7 @@ int main( void )
 		
 		// Get a handle for our "MVP" uniform
 		GLuint MatrixID = glGetUniformLocation(shader_program, "MVP");
-		GLuint ModelViewMatrixID = glGetUniformLocation(shader_program, "MV");
+		GLuint ModelViewMatrixID = glGetUniformLocation(shader_program, "V");
 		GLuint EyePos = glGetUniformLocation(shader_program, "EyePos");
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelViewMatrixID, 1, GL_FALSE, &view[0][0]);
@@ -403,7 +432,7 @@ int main( void )
 
 		
 		glBindVertexArray(vao);
-	  	glDrawArrays(GL_TRIANGLES, 0, drawArraySize);
+		glDrawArrays(GL_TRIANGLES, 0, drawArraySize);
 
 		
 		// Swap buffers
@@ -412,7 +441,7 @@ int main( void )
 
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
-		   glfwWindowShouldClose(window) == 0 );
+	       glfwWindowShouldClose(window) == 0 );
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vbo_surface);

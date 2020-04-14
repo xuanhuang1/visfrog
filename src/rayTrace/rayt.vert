@@ -12,6 +12,9 @@ void main() {
      
   gl_Position = MVP * vec4(vp, 1);
 
-  eye_to_v = vp - EyePos;
+  eye_to_v.x = vp.x - EyePos.x;
+  eye_to_v.y = vp.y - EyePos.y;
+  eye_to_v.z = vp.z - EyePos.z;
+
   v_pos = vp;
 };

@@ -12,6 +12,9 @@ out vec4 frag_colour;
 
 void main(){
      vec3 r_dir = normalize(eye_to_v);
+     r_dir.y = r_dir.y;
+     r_dir.z = r_dir.z;
+     
      vec3 r_pos = vec3 (0, 0, 0);
 
      float val = 0;
@@ -19,12 +22,12 @@ void main(){
 
      for(int i=0;i<100;i++)
      {
-	if (r_start.x > 0.51) break;
-	if (r_start.x < -0.51) break;
-	if (r_start.y > 0.51) break;
-	if (r_start.y < -0.51) break;
-	if (r_start.z > 0.51) break;
-	if (r_start.z < -0.51) break;
+	if (r_start.x > 0.501) break;
+	if (r_start.x < -0.501) break;
+	if (r_start.y > 0.501) break;
+	if (r_start.y < -0.501) break;
+	if (r_start.z > 0.501) break;
+	if (r_start.z < -0.501) break;
 
 	float p_val = texture(vol, r_start+0.5).r;
 	val +=  0.5*texture(vol, r_start+0.5).r;
