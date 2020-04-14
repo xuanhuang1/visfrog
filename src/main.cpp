@@ -382,6 +382,17 @@ int main( void )
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		
+		glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
+		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+	
+		view = glm::lookAt(cameraPos, cameraPos + cameraDirection, cameraUp);
+		projection = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
+
+	
+		MVP =  projection * view; // just let model = I 
+
+		
 		// Get a handle for our "MVP" uniform
 		GLuint MatrixID = glGetUniformLocation(shader_program, "MVP");
 		GLuint ModelViewMatrixID = glGetUniformLocation(shader_program, "MV");
