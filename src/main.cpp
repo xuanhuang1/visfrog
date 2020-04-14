@@ -39,6 +39,10 @@ const char* fragment_shader =
 "  frag_colour = vec4(0.5, 0.0, 0.0, 0.4);"
 "}";
 
+glm::vec3 cameraPos;
+glm::vec3 cameraTarget;
+glm::vec3 up;
+
 
 
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
@@ -165,6 +169,24 @@ GLuint getShaderFromFile(const char* path_v, const char* path_f){
 }
 
 
+static void startTurningRight()
+{
+	std::cout << "Turning Right";
+	// init cameras
+	cameraPos = glm::vec3(1.0f, 1.0f, -3.0f);
+	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
+}
+
+static void stopTurningRight()
+{
+	std::cout << "done turning";
+	// init cameras
+	cameraPos = glm::vec3(1.0f, 1.0f, -2.0f);
+	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
+}
+
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -172,7 +194,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         render_mode = SURFACE;
     if (key == GLFW_KEY_V && action == GLFW_PRESS)
         render_mode = VOLUME;
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+		startTurningRight();
+	if (key == GLFW_KEY_L && action == GLFW_RELEASE)
+		stopTurningRight();
+
 }
+
 
 
 
@@ -306,9 +334,9 @@ int main( void )
 	
 	
 	// init cameras
-	glm::vec3 cameraPos = glm::vec3(1.0f, 1.0f, -2.0f);  
-	glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); 
+	cameraPos = glm::vec3(1.0f, 1.0f, -2.0f);  
+	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	up = glm::vec3(0.0f, 1.0f, 0.0f); 
 
 	glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
 	glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
