@@ -219,8 +219,8 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
-	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
-							   "../../src/rayTrace/rayt.frag");
+	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
+							   "../src/rayTrace/rayt.frag");
 
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
@@ -230,7 +230,7 @@ int main( void )
 
 	// Read data
 	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
-	std::ifstream file("../../data/frog.raw", std::ios::in | std::ios::binary);
+	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
 	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
     	file.read((&inputData[i]), sizeof(inputData[i]));
   	}
