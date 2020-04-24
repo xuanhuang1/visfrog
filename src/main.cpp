@@ -20,6 +20,13 @@ GLFWwindow* window;
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../../imgui/imgui.h"
+#include "./../imgui/examples/imgui_impl_glfw.h"
+#include "../../imgui/examples/imgui_impl_opengl3.h"
+
+
+
+
 // include MC 
 #include "isosurface/MarchingCube.h"
 
@@ -267,7 +274,7 @@ int main( void )
 
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow( width, height, "Tutorial 01", NULL, NULL);
+	window = glfwCreateWindow( width, height, "", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
 		getchar();
@@ -416,6 +423,16 @@ int main( void )
 	GLuint vao = vao_surface;
 	int drawArraySize = vertices_surface.size()/3;
 
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init();
+
+
+
+
 	do{
 		// Clear the screen
 	  
@@ -470,6 +487,13 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::ShowDemoWindow();
+		ImGui::Render();
+
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 	       glfwWindowShouldClose(window) == 0 );
@@ -480,6 +504,10 @@ int main( void )
 	glDeleteProgram(shader_program_surface);
 	glDeleteVertexArrays(1, &vao_surface);
 	glDeleteVertexArrays(1, &vao_volume);
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
