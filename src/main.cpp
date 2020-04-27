@@ -264,6 +264,31 @@ void  scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 }
 
 
+void generate_colormap(std::vector<float> &tfnc_rgba, std::vector<glm::vec4> &col_pts, int isovalue, int range, int colormap_length){
+  
+  tfnc_rgba.clear();
+  tfnc_rgba.resize(0);
+  
+  for (int i=0; i< colormap_length; i++){
+    float colormap_stepsize = float(colormap_length)/(col_pts.size()-1);
+    uint32_t col_index_last = uint32_t(i/colormap_stepsize) ;
+    uint32_t col_index_next = col_index_last + 1;
+    //if (col_index_next == col_pts.size()) col_index_next = col_index_last;
+	  
+    for (int j=0; j<3; j++)
+      tfnc_rgba.push_back(col_pts[col_index_last][j] +
+			  (col_pts[col_index_next][j] - col_pts[col_index_last][j])
+			  *float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
+	  
+    if (abs(i -isovalue) > range)
+      tfnc_rgba.push_back(0);
+    else
+      tfnc_rgba.push_back(col_pts[col_index_last][3] +
+			  (col_pts[col_index_next][3] - col_pts[col_index_last][3])
+			  *float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
+  }
+}
+
 
 
 int main( void )
@@ -324,6 +349,7 @@ int main( void )
 
 	int dim[3] = {500, 470, 136};
 	int isovalue = 50;
+	int prev_isovalue = isovalue;
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 	std::vector<float> tfnc_rgba;
 
@@ -351,24 +377,7 @@ int main( void )
 	col_pts.push_back(glm::vec4(1.0, 0.0 ,0.0, 1.0));
 
 	uint32_t colormap_length = 256;
-        for (int i=0; i< colormap_length; i++){
-	  float colormap_stepsize = float(colormap_length)/(col_pts.size()-1);
-	  uint32_t col_index_last = uint32_t(i/colormap_stepsize) ;
-	  uint32_t col_index_next = col_index_last + 1;
-	  //if (col_index_next == col_pts.size()) col_index_next = col_index_last;
-	  
-	  for (int j=0; j<3; j++)
-	    tfnc_rgba.push_back(col_pts[col_index_last][j] +
-				(col_pts[col_index_next][j] - col_pts[col_index_last][j])
-				*float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
-	  
-	  if (abs(i -isovalue) > 20)
-	    tfnc_rgba.push_back(0);
-	  else
-	    tfnc_rgba.push_back(col_pts[col_index_last][3] +
-				(col_pts[col_index_next][3] - col_pts[col_index_last][3])
-				*float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
-	}
+	generate_colormap(tfnc_rgba, col_pts, isovalue, 20, colormap_length);
 	
 
 	// marching cube
@@ -505,6 +514,15 @@ int main( void )
 			shader_program = shader_program_rayTrace;
 			vao = vao_volume;
 			drawArraySize = 6*6;
+			
+			if (prev_isovalue != isovalue){
+			  //std::cout << "update to:"<<isovalue<<"\n";
+			  prev_isovalue = isovalue;
+			  generate_colormap(tfnc_rgba, col_pts, isovalue, 20, colormap_length);
+			  glActiveTexture(GL_TEXTURE1);
+			  glBindTexture(GL_TEXTURE_1D, tfnc);
+			  glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA32F, tfnc_rgba.size()/4, 0, GL_RGBA, GL_FLOAT, &tfnc_rgba[0]);
+			}
 		        
 			
 			glUniform1i(glGetUniformLocation(shader_program, "vol"), 0); // set it manually
