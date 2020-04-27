@@ -3,7 +3,10 @@
 uniform mat4 MVP;
 uniform mat4 MV;
 uniform vec3 EyePos;
+
 uniform sampler3D vol;
+uniform sampler1D tf;
+
 
 in vec3 eye_to_v;
 in vec3 v_pos;
@@ -22,7 +25,7 @@ void main(){
 
      color = vec4(0,0,0,0);
      
-     for(int i=0;i<100;i++)
+     for(int i=0;i<300;i++)
      {
 	if (r_start.x > 0.501) break;
 	if (r_start.x < -0.501) break;
@@ -32,7 +35,9 @@ void main(){
 	if (r_start.z < -0.501) break;
 
 	float val = texture(vol, r_start+0.5).r;	
-	vec4 val_color = vec4(10, 10, 10, 0.1) * val;
+	vec4 val_color = texture(tf, (val-0.5)*0.5).rgba;
+	//vec4 val_color = vec4(1,1,1,0.1) * val;
+
 
 	color.rgb += (1.0 - color.a) * val_color.a * val_color.rgb;
 	color.a += (1.0 - color.a) * val_color.a;
@@ -42,5 +47,5 @@ void main(){
 
      ///frag_colour = vec4(texture(vol, r_pos).r,texture(vol, r_pos).r,texture(vol, r_pos).r , 0.4);
      //frag_colour = vec4(eye_to_v*2 , 0.4);
-     //frag_colour = vec4(val, val, val, 0.1);
+     //color = texture(tf, 0.25).rgba;
 }

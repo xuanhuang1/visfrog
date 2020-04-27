@@ -283,6 +283,7 @@ int main( void )
 	}
 	glfwMakeContextCurrent(window);
 
+
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
@@ -302,14 +303,18 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
+	//GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
+	//						   "../../src/rayTrace/rayt.frag");
 	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
 							   "../src/rayTrace/rayt.frag");
 
+	
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
 
 	int dim[3] = {500, 470, 136};
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
+	std::vector<float> tfnc_rgba;
 
 	// Read data
 	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
@@ -326,6 +331,19 @@ int main( void )
   	//  ofile.close();
   	// }
 
+	// fill simple blue-red transfer function
+	tfnc_rgba.push_back(1.0);
+	tfnc_rgba.push_back(0.0);
+	tfnc_rgba.push_back(0.0);
+	tfnc_rgba.push_back(0.5);
+
+
+	tfnc_rgba.push_back(0.0);
+	tfnc_rgba.push_back(0.0);
+	tfnc_rgba.push_back(1.0);
+	tfnc_rgba.push_back(0.0);
+	
+
 	// for test case make a simple 2x2x2 grid, half 0s half 1s
 	MarchingCube(inputData, dim, vertices_surface, normals_surface, 50);
 	for (int i=0;i<vertices_surface.size()/3;i++){
@@ -333,36 +351,40 @@ int main( void )
 	  normals_surface.push_back(0);
 	  normals_surface.push_back(-1);
 	}
-
-
+			
 	// set texture
-	glEnable(GL_TEXTURE_3D);
-	PFNGLTEXIMAGE3DPROC glTexImage3D;
-	glTexImage3D = (PFNGLTEXIMAGE3DPROC) glfwGetProcAddress("glTexImage3D");
+	//glEnable(GL_TEXTURE_3D);
+	//PFNGLTEXIMAGE3DPROC glTexImage3D;
+	//glTexImage3D = (PFNGLTEXIMAGE3DPROC) glfwGetProcAddress("glTexImage3D");
 	
 	if(!GL_ARB_texture_non_power_of_two)
 	  printf("NO NPOT TEXTURE EXTENSION!\n");
 	  else printf("support not power of 2 extension\n");
-	
-	unsigned int texname;
+
+			
+	unsigned int texname, tfnc;
+	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &texname);
 	glBindTexture(GL_TEXTURE_3D, texname);
-
-	//GLubyte *texels = new GLubyte[inputData.size()];
-	/*for (int i=0;i<6*6*3;i+=3){
-	  box_points[i+1] *= ((dim[1]+0.0f)/dim[0]);
-	  box_points[i+2] *= ((dim[2]+0.0f)/dim[0]);
-	  }*/
-
 
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-
 	glTexImage3D(GL_TEXTURE_3D, 0, GL_RED, dim[0], dim[1], dim[2], 0, GL_RED, 
 	  GL_UNSIGNED_BYTE, &inputData[0]);
+
+
+	glActiveTexture(GL_TEXTURE1);
+	glGenTextures(1, &tfnc);
+	glBindTexture(GL_TEXTURE_1D, tfnc);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA32F, tfnc_rgba.size()/4, 0, GL_RGBA, GL_FLOAT, &tfnc_rgba[0]);
+
 
 	// Create vbos
 	GLuint vbo_surface = 0;
@@ -431,7 +453,9 @@ int main( void )
 	ImGui_ImplOpenGL3_Init();
 
 
-
+	GLenum err = glGetError();
+	if(err != GL_NO_ERROR) // error
+	  std::cout <<"err\n";
 
 	do{
 		// Clear the screen
@@ -452,10 +476,19 @@ int main( void )
 			shader_program = shader_program_rayTrace;
 			vao = vao_volume;
 			drawArraySize = 6*6;
+		        
 			
 			glUniform1i(glGetUniformLocation(shader_program, "vol"), 0); // set it manually
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_3D, texname);
+
+			
+			glUniform1i(glGetUniformLocation(shader_program, "tf"), 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_1D, tfnc);
+
+
+
 		}
 		// set shader to use
 		glUseProgram(shader_program);
