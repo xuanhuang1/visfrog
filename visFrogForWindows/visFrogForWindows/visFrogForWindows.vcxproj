@@ -169,10 +169,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\imgui\examples\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\src\isosurface\MarchingCube.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\imgui\imconfig.h" />
+    <ClInclude Include="..\..\imgui\imgui.h" />
     <ClInclude Include="..\..\src\isosurface\MarchingCube.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

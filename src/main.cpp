@@ -20,8 +20,8 @@ GLFWwindow* window;
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//#include "../imgui/imgui.h"
-#include "./../imgui/examples/imgui_impl_glfw.h"
+//#include "../../imgui/imgui.h"
+#include "../../imgui/examples/imgui_impl_glfw.h"
 #include "../../imgui/examples/imgui_impl_opengl3.h"
 
 
@@ -72,6 +72,16 @@ float r = -2.0;
 double previousMouseX = 0.0;
 double previousMouseY = 0.0;
 bool isMouseHeld = false;
+
+//For GUI controls
+bool showSkin = false;
+bool showSkeleton = false;
+bool showOrgans = false;
+bool showNerves = false;
+bool showEyes = false;
+
+bool isVolumeViewPicked = false;
+
 
 
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
@@ -313,7 +323,7 @@ int main( void )
 	std::vector<float> normals_surface;
 
 	int dim[3] = {500, 470, 136};
-	float isovalue = 50;
+	int isovalue = 50;
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 	std::vector<float> tfnc_rgba;
 
@@ -469,7 +479,7 @@ int main( void )
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 
-	bool show_demo_window = true;
+	//bool show_demo_window = true;
 
 	GLenum err = glGetError();
 	if(err != GL_NO_ERROR) // error
@@ -540,13 +550,36 @@ int main( void )
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Controls");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Checkbox("Volume View", &isVolumeViewPicked);
+		ImGui::Text("Isosurfaces");               // Display some text (you can use a format strings too)
+		ImGui::Checkbox("Skin", &showSkin); 
+		ImGui::Checkbox("Skeleton", &showSkeleton);
+		ImGui::Checkbox("Organs", &showOrgans);
+		ImGui::Checkbox("Nerves", &showNerves);
+		ImGui::Checkbox("Eyes", &showEyes);
+		ImGui::Text("Custom");
+		ImGui::SliderInt("Isovalue", &isovalue, 0, 256);
+		ImGui::Text("Transfer Functions");
+		
+		const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes"};
+		static const char* current_item = NULL;
 
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+		if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			{
+				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(items[n], is_selected))
+					current_item = items[n];
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+			}
+			ImGui::EndCombo();
+		}
 
 		ImGui::End();
-		
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
