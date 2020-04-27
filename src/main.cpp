@@ -505,19 +505,49 @@ int main( void )
 		
 		glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT );
 
+
+		bool update_isovalue = false;
+		if (prev_isovalue != isovalue){
+		  //std::cout << "update to:"<<isovalue<<"\n";
+		  prev_isovalue = isovalue;
+		  update_isovalue = true;
+		}
+
 		if (render_mode == SURFACE){
 			shader_program = shader_program_surface;
 			vao = vao_surface;
+			
+			if (update_isovalue){
+			  
+			  vertices_surface.clear();
+			  normals_surface.clear();
+			  
+			  // marching cube
+			  MarchingCube(inputData, dim, vertices_surface, normals_surface, isovalue);
+			  if(!normals_surface.size()){
+			    for (int i=0;i<vertices_surface.size()/3;i++){
+			      normals_surface.push_back(0);
+			      normals_surface.push_back(0);
+			      normals_surface.push_back(-1);
+			    }
+			  }
+			  glBindBuffer(GL_ARRAY_BUFFER, vbo_surface);
+			  glBufferData(GL_ARRAY_BUFFER, vertices_surface.size() * sizeof(float), &vertices_surface[0], GL_STATIC_DRAW);
+
+			  glBindBuffer(GL_ARRAY_BUFFER, vbo_surface_normal);
+			  glBufferData(GL_ARRAY_BUFFER, normals_surface.size() * sizeof(float), &normals_surface[0], GL_STATIC_DRAW);
+	
+			}
+		        
 			drawArraySize = vertices_surface.size()/3;
+			
 			  
 		}else if (render_mode == VOLUME){
 			shader_program = shader_program_rayTrace;
 			vao = vao_volume;
 			drawArraySize = 6*6;
 			
-			if (prev_isovalue != isovalue){
-			  //std::cout << "update to:"<<isovalue<<"\n";
-			  prev_isovalue = isovalue;
+			if (update_isovalue){
 			  generate_colormap(tfnc_rgba, col_pts, isovalue, 20, colormap_length);
 			  glActiveTexture(GL_TEXTURE1);
 			  glBindTexture(GL_TEXTURE_1D, tfnc);
