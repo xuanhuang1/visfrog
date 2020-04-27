@@ -35,7 +35,7 @@ void main(){
 	if (r_start.z < -0.501) break;
 
 	float val = texture(vol, r_start+0.5).r;	
-	vec4 val_color = texture(tf, (val-0.5)*0.5).rgba;
+	vec4 val_color = texture(tf, val).rgba;
 	//vec4 val_color = vec4(1,1,1,0.1) * val;
 
 
@@ -47,5 +47,6 @@ void main(){
 
      ///frag_colour = vec4(texture(vol, r_pos).r,texture(vol, r_pos).r,texture(vol, r_pos).r , 0.4);
      //frag_colour = vec4(eye_to_v*2 , 0.4);
-     //color = texture(tf, 0.25).rgba;
+     //color = texture(tf, v_pos.y+0.5).rgba;
+     //color = vec4(v_pos.y + 0.5, v_pos.y+0.5, v_pos.y+0.5, 1);
 }

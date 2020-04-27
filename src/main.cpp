@@ -313,6 +313,7 @@ int main( void )
 	std::vector<float> normals_surface;
 
 	int dim[3] = {500, 470, 136};
+	float isovalue = 50;
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 	std::vector<float> tfnc_rgba;
 
@@ -332,20 +333,36 @@ int main( void )
   	// }
 
 	// fill simple blue-red transfer function
-	tfnc_rgba.push_back(1.0);
-	tfnc_rgba.push_back(0.0);
-	tfnc_rgba.push_back(0.0);
-	tfnc_rgba.push_back(0.5);
+	// around isovalue
+	std::vector<glm::vec4> col_pts;
+	
+	col_pts.push_back(glm::vec4(0.0, 0.0 ,1.0, 0.0));
+	col_pts.push_back(glm::vec4(1.0, 1.0 ,0.5, 0.5));
+	col_pts.push_back(glm::vec4(1.0, 0.0 ,0.0, 1.0));
 
-
-	tfnc_rgba.push_back(0.0);
-	tfnc_rgba.push_back(0.0);
-	tfnc_rgba.push_back(1.0);
-	tfnc_rgba.push_back(0.0);
+	uint32_t colormap_length = 256;
+        for (int i=0; i< colormap_length; i++){
+	  float colormap_stepsize = float(colormap_length)/(col_pts.size()-1);
+	  uint32_t col_index_last = uint32_t(i/colormap_stepsize) ;
+	  uint32_t col_index_next = col_index_last + 1;
+	  //if (col_index_next == col_pts.size()) col_index_next = col_index_last;
+	  
+	  for (int j=0; j<3; j++)
+	    tfnc_rgba.push_back(col_pts[col_index_last][j] +
+				(col_pts[col_index_next][j] - col_pts[col_index_last][j])
+				*float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
+	  
+	  if (abs(i -isovalue) > 20)
+	    tfnc_rgba.push_back(0);
+	  else
+	    tfnc_rgba.push_back(col_pts[col_index_last][3] +
+				(col_pts[col_index_next][3] - col_pts[col_index_last][3])
+				*float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
+	}
 	
 
-	// for test case make a simple 2x2x2 grid, half 0s half 1s
-	MarchingCube(inputData, dim, vertices_surface, normals_surface, 50);
+	// marching cube
+	MarchingCube(inputData, dim, vertices_surface, normals_surface, isovalue);
 	for (int i=0;i<vertices_surface.size()/3;i++){
 	  normals_surface.push_back(0);
 	  normals_surface.push_back(0);
@@ -379,8 +396,8 @@ int main( void )
 	glActiveTexture(GL_TEXTURE1);
 	glGenTextures(1, &tfnc);
 	glBindTexture(GL_TEXTURE_1D, tfnc);
-	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA32F, tfnc_rgba.size()/4, 0, GL_RGBA, GL_FLOAT, &tfnc_rgba[0]);
