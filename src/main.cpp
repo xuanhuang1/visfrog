@@ -20,7 +20,7 @@ GLFWwindow* window;
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../../imgui/imgui.h"
+//#include "../imgui/imgui.h"
 #include "./../imgui/examples/imgui_impl_glfw.h"
 #include "../../imgui/examples/imgui_impl_opengl3.h"
 
@@ -302,8 +302,8 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
-	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
-							   "../../src/rayTrace/rayt.frag");
+	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
+							   "../src/rayTrace/rayt.frag");
 
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
@@ -313,7 +313,7 @@ int main( void )
 
 	// Read data
 	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
-	std::ifstream file("../../data/frog.raw", std::ios::in | std::ios::binary);
+	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
 	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
     	file.read((&inputData[i]), sizeof(inputData[i]));
   	}
@@ -437,6 +437,10 @@ int main( void )
 		// Clear the screen
 	  
 		glEnable(GL_DEPTH_TEST);
+		// Enable blending
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT );
 
 		if (render_mode == SURFACE){

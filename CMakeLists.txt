@@ -29,7 +29,13 @@ add_definitions(
 add_executable(first_window 
 	src/main.cpp
 	src/isosurface/MarchingCube.cpp
-)
+	imgui/imgui.cpp
+	imgui/imgui_draw.cpp
+	imgui/imgui_demo.cpp
+	imgui/imgui_widgets.cpp
+	imgui/examples/imgui_impl_opengl3.cpp
+	imgui/examples/imgui_impl_glfw.cpp
+	)
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
