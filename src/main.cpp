@@ -469,15 +469,17 @@ int main( void )
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 
+	bool show_demo_window = true;
 
 	GLenum err = glGetError();
 	if(err != GL_NO_ERROR) // error
 	  std::cout <<"err\n";
+	
 
 	do{
 		// Clear the screen
-	  
 		glEnable(GL_DEPTH_TEST);
+		
 		// Enable blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -503,8 +505,6 @@ int main( void )
 			glUniform1i(glGetUniformLocation(shader_program, "tf"), 1);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_1D, tfnc);
-
-
 
 		}
 		// set shader to use
@@ -536,17 +536,22 @@ int main( void )
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, drawArraySize);
 
-		
-		// Swap buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-		ImGui::ShowDemoWindow();
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+	    
 		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		// poll events
+		glfwPollEvents();
+		// Swap buffers
+		glfwSwapBuffers(window);
 
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
