@@ -1,15 +1,16 @@
-﻿  MarchingCube.cpp
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(712,12): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(721,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(723,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(725,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(733,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(735,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(737,31): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wanna\visfrog\src\isosurface\MarchingCube.cpp(1770,30): warning C4305: 'initializing': truncation from 'double' to 'float'
+﻿  main.cpp
+C:\Users\wanna\visfrog\src\main.cpp(244,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(244,29): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(262,6): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(312,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(312,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(422,100): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(482,47): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(511,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(524,104): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating code
-  2 of 1436 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 1444 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  Finished generating code
     0 functions were new in current compilation
     12 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
   visFrogForWindows.vcxproj -> C:\Users\wanna\visfrog\visFrogForWindows\x64\Release\visFrogForWindows.exe

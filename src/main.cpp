@@ -348,7 +348,7 @@ int main( void )
 	std::vector<float> normals_surface;
 
 	int dim[3] = {500, 470, 136};
-	int isovalue = 50;
+	int isovalue = 300;
 	int prev_isovalue = isovalue;
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 	std::vector<float> tfnc_rgba;
