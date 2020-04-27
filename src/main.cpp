@@ -20,8 +20,8 @@ GLFWwindow* window;
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//#include "../imgui/imgui.h"
-#include "./../imgui/examples/imgui_impl_glfw.h"
+//#include "../../imgui/imgui.h"
+#include "../../imgui/examples/imgui_impl_glfw.h"
 #include "../../imgui/examples/imgui_impl_opengl3.h"
 
 
@@ -303,10 +303,10 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
-	//GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
-	//						   "../../src/rayTrace/rayt.frag");
-	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
-							   "../src/rayTrace/rayt.frag");
+	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
+							   "../../src/rayTrace/rayt.frag");
+	//GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
+	//						   "../src/rayTrace/rayt.frag");
 
 	
 	std::vector<float> vertices_surface;
