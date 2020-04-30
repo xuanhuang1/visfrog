@@ -359,7 +359,7 @@ int main( void )
 
 	
 	// init gui selection index
-	const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes", "All(none-zero)"};
+	const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes", "All(non-zero)"};
 
 	//////// CHANGE HERE FOR PRESET VALUES ////////
 	const int preset_isovals[] = {10, 60, 110, 160, 210, 0};
@@ -406,12 +406,14 @@ int main( void )
 
 	// marching cube
 	MarchingCube(inputData, dim, vertices_surface, normals_surface, isovalue);
+	/*
 	for (int i=0;i<vertices_surface.size()/3;i++){
 	  normals_surface.push_back(0);
 	  normals_surface.push_back(0);
 	  normals_surface.push_back(-1);
 	}
-			
+	*/	
+
 	// set texture
 	//glEnable(GL_TEXTURE_3D);
 	//PFNGLTEXIMAGE3DPROC glTexImage3D;

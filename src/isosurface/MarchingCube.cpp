@@ -619,7 +619,7 @@ void MarchingCube(const std::vector<char>& input,
 
 	float vert[3]{ 0,0,0 };
 
-	
+	int whichVertex = 0;
 		
     for (int currentZ = 0; currentZ < dim[2] - 1; currentZ++)
 		for (int currentY = 0; currentY < dim[1] - 1; currentY++)
@@ -674,6 +674,7 @@ void MarchingCube(const std::vector<char>& input,
 				// triangles to return for this configuration
 
 				int index = 0;
+				
 
 				for (int v = 0; v < 8; ++v) {
 
@@ -729,7 +730,7 @@ void MarchingCube(const std::vector<char>& input,
 
 					// since that's where the isosurface is computed and defined.
 
-					vert[0] += currentX;// +0.5;
+					vert[0] += currentX +0.5;
 
 					vert[1] += currentY + 0.5;
 
@@ -738,6 +739,32 @@ void MarchingCube(const std::vector<char>& input,
 					output_vertices.push_back(float(vert[0]) / float(dim[0]));
 					output_vertices.push_back(float(vert[1]) / float(dim[0]));
 					output_vertices.push_back(float(vert[2]) / float(dim[0]));
+
+					whichVertex++;
+
+					if (whichVertex > 2)
+					{
+						whichVertex = 0;
+
+						float p1x = output_vertices.at(output_vertices.size() - 9);
+						float p1y = output_vertices.at(output_vertices.size() - 8);
+						float p1z = output_vertices.at(output_vertices.size() - 7);
+						float p2x = output_vertices.at(output_vertices.size() - 6);
+						float p2y = output_vertices.at(output_vertices.size() - 5);
+						float p2z = output_vertices.at(output_vertices.size() - 4);
+						float p3x = output_vertices.at(output_vertices.size() - 3);
+						float p3y = output_vertices.at(output_vertices.size() - 2);
+						float p3z = output_vertices.at(output_vertices.size() - 1);
+						float firstVector[3]{ p2x - p1x, p2y - p1y, p2z - p1z };
+						float secondVector[3]{ p3x - p1x, p3y - p1y, p3z - p1z };
+						float normalX = firstVector[1] * secondVector[2] - firstVector[2] * secondVector[1];
+						float normalY = firstVector[2] * secondVector[0] - firstVector[0] * secondVector[2];
+						float normalZ = firstVector[0] * secondVector[1] - firstVector[1] * secondVector[0];
+						output_normals.push_back(-normalX / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(-normalY / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(-normalZ / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+
+					}
 
 
 				//The contents below were a prior implimentation. Ignore for all future purposes.
