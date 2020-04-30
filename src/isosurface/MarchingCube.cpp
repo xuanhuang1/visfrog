@@ -617,8 +617,6 @@ void MarchingCube(const std::vector<char>& input,
 
 	*/
 
-	//Work in progress: real marching cubes.
-
 	float vert[3]{ 0,0,0 };
 
 	
@@ -669,7 +667,7 @@ void MarchingCube(const std::vector<char>& input,
 				if (cornerUpperRightBackAboveThreshold)
 					howManyCornersAbove++;
 
-				int vertexValues[8]{ cornerLowerLeftFrontAboveThreshold,cornerLowerRightFrontAboveThreshold, cornerUpperRightFrontAboveThreshold, cornerUpperLeftFrontAboveThreshold, cornerLowerLeftBackAboveThreshold, cornerLowerRightBacktAboveThreshold, cornerUpperRightBackAboveThreshold,cornerUpperLeftBackAboveThreshold };
+				bool vertexValues[8]{ cornerLowerLeftFrontAboveThreshold,cornerLowerRightFrontAboveThreshold, cornerUpperRightFrontAboveThreshold, cornerUpperLeftFrontAboveThreshold, cornerLowerLeftBackAboveThreshold, cornerLowerRightBacktAboveThreshold, cornerUpperRightBackAboveThreshold,cornerUpperLeftBackAboveThreshold };
 
 				// The triangle table gives us the mapping from index to actual
 
@@ -705,7 +703,8 @@ void MarchingCube(const std::vector<char>& input,
 
 					int isoval = threshold;
 
-					int t2 = 0;
+					float t2 = 0.0;
+
 
 					if (abs(fa - fb) < 0.0001) {
 
@@ -714,7 +713,7 @@ void MarchingCube(const std::vector<char>& input,
 					}
 					else {
 
-						t2 = (isoval - fa) / (fb - fa);
+						//t2 = (isoval - fa) / (fb - fa);
 
 					}
 
@@ -730,7 +729,7 @@ void MarchingCube(const std::vector<char>& input,
 
 					// since that's where the isosurface is computed and defined.
 
-					vert[0] += currentX + 0.5;
+					vert[0] += currentX;// +0.5;
 
 					vert[1] += currentY + 0.5;
 

@@ -31,7 +31,7 @@ GLFWwindow* window;
 
 
 // change to 1 for windows vs proj
-#define USE_WIN_VSPROJ 0
+#define USE_WIN_VSPROJ 1
 
 
 
