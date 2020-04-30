@@ -25,10 +25,16 @@ GLFWwindow* window;
 #include "../../imgui/examples/imgui_impl_opengl3.h"
 
 
-
-
 // include MC 
 #include "isosurface/MarchingCube.h"
+
+
+
+// change to 1 for windows vs proj
+#define USE_WIN_VSPROJ 0
+
+
+
 
 const char* vertex_shader =
 "#version 330\n"
@@ -279,7 +285,7 @@ void generate_colormap(std::vector<float> &tfnc_rgba, std::vector<glm::vec4> &co
       tfnc_rgba.push_back(col_pts[col_index_last][j] +
 			  (col_pts[col_index_next][j] - col_pts[col_index_last][j])
 			  *float(i%uint32_t(colormap_stepsize))/float(colormap_stepsize));
-	  
+      
     if (abs(i -isovalue) > range)
       tfnc_rgba.push_back(0);
     else
@@ -338,26 +344,44 @@ int main( void )
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
+
+
+#if USE_WIN_VSPROJ
 	GLuint shader_program_rayTrace = getShaderFromFile("../../src/rayTrace/rayt.vert",
 							   "../../src/rayTrace/rayt.frag");
-	//GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
-	//						   "../src/rayTrace/rayt.frag");
-
+#else
+	GLuint shader_program_rayTrace = getShaderFromFile("../src/rayTrace/rayt.vert",
+							   "../src/rayTrace/rayt.frag");
+#endif
 	
 	std::vector<float> vertices_surface;
 	std::vector<float> normals_surface;
 
+	
+	// init gui selection index
+	const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes", "All(none-zero)"};
+
+	//////// CHANGE HERE FOR PRESET VALUES ////////
+	const int preset_isovals[] = {10, 60, 110, 160, 210, 0};
+	uint32_t item_selected_index = 6-1;
+
 	int dim[3] = {500, 470, 136};
-	int isovalue = 300;
+	int isovalue = preset_isovals[item_selected_index];
 	int prev_isovalue = isovalue;
+	int vol_range = 20;
+	int prev_vol_range = vol_range;
 	std::vector<char> inputData(dim[0]*dim[1]*dim[2]);
 	std::vector<float> tfnc_rgba;
+	
 
 	// Read data
-	//std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+#if USE_WIN_VSPROJ
 	std::ifstream file("../../data/frog.raw", std::ios::in | std::ios::binary);
+#else
+	std::ifstream file("../data/frog.raw", std::ios::in | std::ios::binary);
+#endif
 	for (int i=0; i<dim[0]*dim[1]*dim[2]; i++){
-    	file.read((&inputData[i]), sizeof(inputData[i]));
+	  file.read((&inputData[i]), sizeof(inputData[i]));
   	}
   	file.close();
 
@@ -377,7 +401,7 @@ int main( void )
 	col_pts.push_back(glm::vec4(1.0, 0.0 ,0.0, 1.0));
 
 	uint32_t colormap_length = 256;
-	generate_colormap(tfnc_rgba, col_pts, isovalue, 20, colormap_length);
+	generate_colormap(tfnc_rgba, col_pts, isovalue, vol_range, colormap_length);
 	
 
 	// marching cube
@@ -493,7 +517,8 @@ int main( void )
 	GLenum err = glGetError();
 	if(err != GL_NO_ERROR) // error
 	  std::cout <<"err\n";
-	
+
+       
 
 	do{
 		// Clear the screen
@@ -505,12 +530,23 @@ int main( void )
 		
 		glClear( GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT );
 
-
+		// update parameters by selection
 		bool update_isovalue = false;
 		if (prev_isovalue != isovalue){
-		  //std::cout << "update to:"<<isovalue<<"\n";
 		  prev_isovalue = isovalue;
 		  update_isovalue = true;
+		}
+
+		if (isVolumeViewPicked){
+		  if (render_mode == SURFACE){
+		    render_mode = VOLUME;
+		    update_isovalue = true;
+		  }
+		}else{
+		  if (render_mode == VOLUME){
+		    render_mode = SURFACE;
+		    update_isovalue = true;
+		  }
 		}
 
 		if (render_mode == SURFACE){
@@ -547,11 +583,12 @@ int main( void )
 			vao = vao_volume;
 			drawArraySize = 6*6;
 			
-			if (update_isovalue){
-			  generate_colormap(tfnc_rgba, col_pts, isovalue, 20, colormap_length);
+			if (update_isovalue || (prev_vol_range != vol_range)){
+			  generate_colormap(tfnc_rgba, col_pts, isovalue, vol_range, colormap_length);
 			  glActiveTexture(GL_TEXTURE1);
 			  glBindTexture(GL_TEXTURE_1D, tfnc);
 			  glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA32F, tfnc_rgba.size()/4, 0, GL_RGBA, GL_FLOAT, &tfnc_rgba[0]);
+			  prev_vol_range = vol_range;
 			}
 		        
 			
@@ -601,30 +638,39 @@ int main( void )
 		ImGui::Begin("Controls");                          // Create a window called "Hello, world!" and append into it.
 		ImGui::Checkbox("Volume View", &isVolumeViewPicked);
 		ImGui::Text("Isosurfaces");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Skin", &showSkin); 
-		ImGui::Checkbox("Skeleton", &showSkeleton);
-		ImGui::Checkbox("Organs", &showOrgans);
-		ImGui::Checkbox("Nerves", &showNerves);
-		ImGui::Checkbox("Eyes", &showEyes);
-		ImGui::Text("Custom");
-		ImGui::SliderInt("Isovalue", &isovalue, 0, 256);
-		ImGui::Text("Transfer Functions");
-		
-		const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes"};
-		static const char* current_item = NULL;
+      	        
 
-		if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
+		if (ImGui::BeginCombo("##combo", items[item_selected_index])) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 			{
-				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-				if (ImGui::Selectable(items[n], is_selected))
-					current_item = items[n];
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				bool is_selected = (item_selected_index == n); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(items[n], is_selected)){
+				        item_selected_index = n;
+					isovalue = preset_isovals[n];
+				}
+				if (is_selected)
+				  ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 			}
 			ImGui::EndCombo();
 		}
+		ImGui::Text("Isovalue");
+		ImGui::SliderInt("isoval", &isovalue, 0, 256);
+		ImGui::Text("Volume range");
+	        ImGui::SliderInt("vol range", &vol_range, 0, 256);
+		ImGui::Text("Transfer Function");
+		
+	        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+		const ImVec2 p = ImGui::GetCursorScreenPos();
+		const float length = 120;
+		const float line_width = length/float(colormap_length);
+		for (uint32_t i=0; i<colormap_length; i++){
+		  draw_list->AddLine(ImVec2(p.x + line_width*i, p.y),
+				     ImVec2(p.x + line_width*i, p.y+20),
+				     ImColor(ImVec4(tfnc_rgba[i*4], tfnc_rgba[i*4+1], tfnc_rgba[i*4+2],tfnc_rgba[i*4+3])),
+				     line_width+5);
+		}
+
 
 		ImGui::End();
 
