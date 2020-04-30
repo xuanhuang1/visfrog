@@ -736,8 +736,8 @@ void MarchingCube(const std::vector<char>& input,
 
 					vert[2] += currentZ + 0.5;
 
-					output_vertices.push_back(float(vert[0]) / float(dim[0]));
-					output_vertices.push_back(float(vert[1]) / float(dim[0]));
+					output_vertices.push_back(float(vert[0]) / float(dim[0])- 0.5);
+					output_vertices.push_back(float(vert[1]) / float(dim[0]) - 0.5);
 					output_vertices.push_back(float(vert[2]) / float(dim[0]));
 
 					whichVertex++;
