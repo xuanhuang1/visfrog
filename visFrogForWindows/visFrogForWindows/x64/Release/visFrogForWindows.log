@@ -8,10 +8,10 @@ C:\Users\wanna\visfrog\src\main.cpp(320,36): warning C4244: 'argument': conversi
 C:\Users\wanna\visfrog\src\main.cpp(320,29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\wanna\visfrog\src\main.cpp(450,100): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 C:\Users\wanna\visfrog\src\main.cpp(510,47): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\main.cpp(582,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\wanna\visfrog\src\main.cpp(594,104): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(584,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\wanna\visfrog\src\main.cpp(596,104): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating code
-  4 of 1450 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  2 of 1450 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     12 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

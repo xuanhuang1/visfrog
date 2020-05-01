@@ -696,6 +696,7 @@ void MarchingCube(const std::vector<char>& input,
 					int v1 = edge_vertices[triTable[index][t]][1];
 
 
+					
 
 					int va[3]{ index_to_vertex[v0][0], index_to_vertex[v0][1], index_to_vertex[v0][2] };
 
@@ -721,19 +722,21 @@ void MarchingCube(const std::vector<char>& input,
 
 					}
 
+					
+
 					vert[0] = va[0] + t2 * (vb[0] - va[0]);
 
 					vert[1] = va[1] + t2 * (vb[1] - va[1]);
 
-					vert[2] = va[2] + t2 * (vb[2] - va[2]);
+					vert[2] = va[2] + t2  * (vb[2] - va[2]);
 
-
+					
 
 					// Note: The vertex positions need to be placed on the dual grid,
 
 					// since that's where the isosurface is computed and defined.
 
-					vert[0] += currentX +0.5;
+					vert[0] += currentX + 0.5;
 
 					vert[1] += currentY + 0.5;
 
@@ -745,7 +748,7 @@ void MarchingCube(const std::vector<char>& input,
 
 					whichVertex++;
 
-					if (whichVertex > 2)
+					if (whichVertex >= 3)
 					{
 						whichVertex = 0;
 
@@ -763,10 +766,15 @@ void MarchingCube(const std::vector<char>& input,
 						float normalX = firstVector[1] * secondVector[2] - firstVector[2] * secondVector[1];
 						float normalY = firstVector[2] * secondVector[0] - firstVector[0] * secondVector[2];
 						float normalZ = firstVector[0] * secondVector[1] - firstVector[1] * secondVector[0];
-						output_normals.push_back(-normalX / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
-						output_normals.push_back(-normalY / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
-						output_normals.push_back(-normalZ / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
-
+						output_normals.push_back(normalX / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalY / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalZ / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalX / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalY / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalZ / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalX / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalY / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
+						output_normals.push_back(normalZ / (sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ)));
 					}
 
 

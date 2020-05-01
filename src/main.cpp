@@ -66,7 +66,7 @@ const char* fragment_shader =
   "  float cosAlpha = clamp(dot(eye, R), 0, 1);"
   "  float cosTheta = clamp(dot(n, l), 0, 1);"
   "  vec3 surfColor = vec3(1,0,0);"
-  "  frag_colour = vec4(surfColor*(cosTheta + pow(cosAlpha,10)), 0.4);"
+  "  frag_colour = vec4(surfColor*(cosTheta + pow(cosAlpha,10)), 1.0);"
   "}";
 
 glm::vec3 cameraPos;
@@ -564,6 +564,7 @@ int main( void )
 			  
 			  // marching cube
 			  MarchingCube(inputData, dim, vertices_surface, normals_surface, isovalue);
+			  
 			  if(!normals_surface.size()){
 			    for (int i=0;i<vertices_surface.size()/3;i++){
 			      normals_surface.push_back(0);
@@ -571,6 +572,7 @@ int main( void )
 			      normals_surface.push_back(-1);
 			    }
 			  }
+			  
 			  glBindBuffer(GL_ARRAY_BUFFER, vbo_surface);
 			  glBufferData(GL_ARRAY_BUFFER, vertices_surface.size() * sizeof(float), &vertices_surface[0], GL_STATIC_DRAW);
 
