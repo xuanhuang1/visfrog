@@ -217,15 +217,17 @@ GLuint getShaderFromFile(const char* path_v, const char* path_f){
 
 static void reorientCamera(float thetaChange, float phiChange, float rChange)
 {
-	//Default
-	/*
-	cameraPos = glm::vec3(1.0f, 1.0f, -2.0f);
-	cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-	*/
 	theta += thetaChange;
+	
+	
 	phi += phiChange;
-	r += rChange;
+	if (phi > 6.283)
+		phi= 6.283;
+	if (phi < 0)
+		phi = 0;
+	
+	r += rChange / 10.0;
+	std::cout << theta << " " << phi << " " << r << std::endl;
 	cameraPos = glm::vec3(r * sin(theta) * cos(phi), r * sin(theta) * sin(phi), r * cos(theta));
 	
 }
@@ -266,7 +268,7 @@ void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
 void  scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	r = yoffset;
-	reorientCamera(0.0f, 0.0f, 0.0f);
+	reorientCamera(0.0f, 0.0f, r);
 }
 
 
@@ -363,7 +365,7 @@ int main( void )
 
 	//////// CHANGE HERE FOR PRESET VALUES ////////
 	const int preset_isovals[] = {5, 135, 120, 180, 0};
-	uint32_t item_selected_index = 6-1;
+	uint32_t item_selected_index = 5-1;
 
 	int dim[3] = {500, 470, 136};
 	int isovalue = preset_isovals[item_selected_index];
