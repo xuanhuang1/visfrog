@@ -596,6 +596,9 @@ void MarchingCube(const std::vector<char>& input,
 	std::vector<float>& output_vertices,
 	std::vector<float>& output_normals, char threshold) {
 
+	std::cout << dim[0] << " " << dim[1] << " " << dim[2] << std::endl;
+
+
 	// fill the outputs with results applying Marching cube on input
 
 	/*

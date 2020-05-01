@@ -359,10 +359,10 @@ int main( void )
 
 	
 	// init gui selection index
-	const char* items[] = { "Skin", "Skeleton", "Organs", "Nerves", "Eyes", "All(non-zero)"};
+	const char* items[] = { "Skin", "Skeleton", "Organs", "Eyes", "All(non-zero)"};
 
 	//////// CHANGE HERE FOR PRESET VALUES ////////
-	const int preset_isovals[] = {10, 60, 110, 160, 210, 0};
+	const int preset_isovals[] = {5, 135, 120, 180, 0};
 	uint32_t item_selected_index = 6-1;
 
 	int dim[3] = {500, 470, 136};
