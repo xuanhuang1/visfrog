@@ -265,7 +265,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !(previousMouseX > windowX && previousMouseX < windowX + windowWidth && previousMouseY > windowY && previousMouseY < windowY + windowHeight))
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !(previousMouseX > windowX - 10 && previousMouseX < windowX + windowWidth + 10 && previousMouseY > windowY -10 && previousMouseY < windowY + windowHeight + 10))
 	{
 		isMouseHeld = true;
 	}
@@ -656,9 +656,8 @@ int main( void )
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("Controls");  
-		ImGui::Text("Zoom");
-		ImGui::SliderFloat("", &r, -0.0000000000000000000001f, -3);
+		ImGui::Begin("Controls"); 
+		ImGui::SliderFloat("Zoom", &r, -0.0000000000000000000001f, -3);
 		ImGui::Checkbox("Volume View", &isVolumeViewPicked);
 		ImGui::Text("Isosurfaces");               // Display some text (you can use a format strings too)
       	        
@@ -677,10 +676,8 @@ int main( void )
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::Text("Isovalue");
-		ImGui::SliderInt("", &isovalue, 0, 256);
-		ImGui::Text("Volume range");
-	        ImGui::SliderInt("", &vol_range, 0, 256);
+		ImGui::SliderInt("Isovalue", &isovalue, 0, 256);
+	        ImGui::SliderInt("Volume range", &vol_range, 0, 256);
 		ImGui::Text("Transfer Function");
 		
 	        ImDrawList* draw_list = ImGui::GetWindowDrawList();
