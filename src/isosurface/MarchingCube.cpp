@@ -596,9 +596,6 @@ void MarchingCube(const std::vector<char>& input,
 	std::vector<float>& output_vertices,
 	std::vector<float>& output_normals, char threshold) {
 
-	std::cout << dim[0] << " " << dim[1] << " " << dim[2] << std::endl;
-
-
 	// fill the outputs with results applying Marching cube on input
 
 	/*
@@ -670,7 +667,7 @@ void MarchingCube(const std::vector<char>& input,
 				if (cornerUpperRightBackAboveThreshold)
 					howManyCornersAbove++;
 
-				bool vertexValues[8]{ cornerLowerLeftFrontAboveThreshold,cornerLowerRightFrontAboveThreshold, cornerUpperRightFrontAboveThreshold, cornerUpperLeftFrontAboveThreshold, cornerLowerLeftBackAboveThreshold, cornerLowerRightBacktAboveThreshold, cornerUpperRightBackAboveThreshold,cornerUpperLeftBackAboveThreshold };
+				bool vertexValues[8]{ cornerLowerLeftFrontAboveThreshold, cornerLowerRightFrontAboveThreshold, cornerLowerRightBacktAboveThreshold, cornerLowerLeftBackAboveThreshold, cornerUpperLeftFrontAboveThreshold, cornerUpperRightFrontAboveThreshold, cornerUpperRightBackAboveThreshold,cornerUpperLeftBackAboveThreshold };
 
 				// The triangle table gives us the mapping from index to actual
 
@@ -711,6 +708,7 @@ void MarchingCube(const std::vector<char>& input,
 					float t2 = 0.0;
 
 
+					/*
 					if (abs(fa - fb) < 0.0001) {
 
 						t2 = 0.0;
@@ -721,15 +719,17 @@ void MarchingCube(const std::vector<char>& input,
 						//t2 = (isoval - fa) / (fb - fa);
 
 					}
+					*/
 
 					
 
-					vert[0] = va[0] + t2 * (vb[0] - va[0]);
+					vert[0] = va[0] + t2;// *(vb[0] - va[0]);
 
-					vert[1] = va[1] + t2 * (vb[1] - va[1]);
+					vert[1] = va[1] + t2;// *(vb[1] - va[1]);
 
-					vert[2] = va[2] + t2  * (vb[2] - va[2]);
+					vert[2] = va[2] + t2;//  *(vb[2] - va[2]);
 
+					
 					
 
 					// Note: The vertex positions need to be placed on the dual grid,

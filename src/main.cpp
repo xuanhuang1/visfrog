@@ -257,6 +257,10 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	{
 		reorientCamera(-xVariance / 10.0, -yVariance / 15.0, 0.0f);
 	}
+	else
+	{
+		reorientCamera(0.0f, 0.0f, 0.0f);
+	}
 }
 
 void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
@@ -349,6 +353,7 @@ int main( void )
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetMouseButtonCallback(window, mouse_click_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// Create and link shader 
 	GLuint shader_program_surface = getShader(vertex_shader, fragment_shader);
@@ -414,6 +419,10 @@ int main( void )
 
 	// marching cube
 	MarchingCube(inputData, dim, vertices_surface, normals_surface, isovalue);
+	//dim[0] = 1;
+	//dim[1] = 1;
+	//dim[2] = 1;
+	//MarchingCube({ 0, 0, 0, 0, 2, 2, 2, 2 }, dim, vertices_surface, normals_surface, 1);
 	/*
 	for (int i=0;i<vertices_surface.size()/3;i++){
 	  normals_surface.push_back(0);
@@ -649,7 +658,7 @@ int main( void )
 		ImGui::NewFrame();
 		ImGui::Begin("Controls");  
 		ImGui::Text("Zoom");
-		ImGui::SliderFloat("", &r, -0.25, -3);
+		ImGui::SliderFloat("", &r, -0.0000000000000000000001f, -3);
 		ImGui::Checkbox("Volume View", &isVolumeViewPicked);
 		ImGui::Text("Isosurfaces");               // Display some text (you can use a format strings too)
       	        
@@ -669,9 +678,9 @@ int main( void )
 			ImGui::EndCombo();
 		}
 		ImGui::Text("Isovalue");
-		ImGui::SliderInt("isoval", &isovalue, 0, 256);
+		ImGui::SliderInt("", &isovalue, 0, 256);
 		ImGui::Text("Volume range");
-	        ImGui::SliderInt("vol range", &vol_range, 0, 256);
+	        ImGui::SliderInt("", &vol_range, 0, 256);
 		ImGui::Text("Transfer Function");
 		
 	        ImDrawList* draw_list = ImGui::GetWindowDrawList();
