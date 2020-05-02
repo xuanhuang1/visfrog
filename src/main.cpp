@@ -217,18 +217,19 @@ GLuint getShaderFromFile(const char* path_v, const char* path_f){
 
 static void reorientCamera(float thetaChange, float phiChange, float rChange)
 {
+
 	theta += thetaChange;
 	
 	
 	phi += phiChange;
-	if (phi > 6.283)
-		phi= 6.283;
+	if (phi > 3.1415)
+		phi= 3.1415;
 	if (phi < 0)
 		phi = 0;
 	
 	r += rChange / 10.0;
-	std::cout << theta << " " << phi << " " << r << std::endl;
-	cameraPos = glm::vec3(r * sin(theta) * cos(phi), r * sin(theta) * sin(phi), r * cos(theta));
+	cameraPos = glm::vec3(r * sin(theta) * sin(phi), r * cos(theta) * sin(phi), r * cos(phi));
+	up = glm::vec3(sin(theta) * cos(-phi), cos(theta) * cos(-phi), sin(-phi));
 	
 }
 
@@ -267,8 +268,8 @@ void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
 
 void  scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	r = yoffset;
-	reorientCamera(0.0f, 0.0f, r);
+	//r = yoffset;
+	//reorientCamera(0.0f, 0.0f, r);
 }
 
 
@@ -641,7 +642,9 @@ int main( void )
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		ImGui::Begin("Controls");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Controls");  
+		ImGui::Text("Zoom");
+		ImGui::SliderFloat("", &r, -0.25, -3);
 		ImGui::Checkbox("Volume View", &isVolumeViewPicked);
 		ImGui::Text("Isosurfaces");               // Display some text (you can use a format strings too)
       	        
