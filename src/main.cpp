@@ -88,6 +88,11 @@ bool showEyes = false;
 
 bool isVolumeViewPicked = false;
 
+int windowX = 0;
+int windowY = 0;
+int windowWidth = 0;
+int windowHeight = 0;
+
 
 
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
@@ -248,7 +253,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	double yVariance = ypos - previousMouseY;
 	previousMouseX = xpos;
 	previousMouseY = ypos;
-	if (isMouseHeld)
+	if (isMouseHeld )
 	{
 		reorientCamera(-xVariance / 10.0, -yVariance / 15.0, 0.0f);
 	}
@@ -256,7 +261,7 @@ static void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void  mouse_click_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !(previousMouseX > windowX && previousMouseX < windowX + windowWidth && previousMouseY > windowY && previousMouseY < windowY + windowHeight))
 	{
 		isMouseHeld = true;
 	}
@@ -679,7 +684,10 @@ int main( void )
 				     ImColor(ImVec4(tfnc_rgba[i*4], tfnc_rgba[i*4+1], tfnc_rgba[i*4+2],tfnc_rgba[i*4+3])),
 				     line_width+5);
 		}
-
+		windowX = ImGui::GetWindowPos().x;
+		windowY = ImGui::GetWindowPos().y;
+		windowWidth = ImGui::GetWindowWidth();
+		windowHeight = ImGui::GetWindowHeight();
 
 		ImGui::End();
 
